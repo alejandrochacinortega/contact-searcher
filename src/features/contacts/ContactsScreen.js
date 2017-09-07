@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
-import styles from './styles';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import styles from './styles';
+import { fetchAllContacts } from '../../actions';
 
 class ContactsScreen extends Component {
+  componentDidMount() {
+    setTimeout(() => {
+      this.props.fetchAllContacts();
+    });
+  }
+
   render() {
     return (
       <div style={styles.container}>
@@ -21,4 +29,8 @@ function mapStateToProps(state) {
   return state;
 }
 
-export default connect(mapStateToProps, null)(ContactsScreen);
+ContactsScreen.propTypes = {
+  fetchAllContacts: PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps, { fetchAllContacts })(ContactsScreen);

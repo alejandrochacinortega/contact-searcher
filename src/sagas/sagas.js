@@ -1,23 +1,25 @@
-import { takeEvery, fork } from 'redux-saga/effects';
+import { takeEvery, fork, put } from 'redux-saga/effects';
 
-import { FETCH_ALL_CONTACTS } from '../actions';
+import * as ContactsAPI from '../ContactsAPI';
+import {
+  FETCH_ALL_CONTACTS,
+  FETCH_ALL_CONTACTS_SUCCESS,
+  FETCH_ALL_CONTACTS_FAILED,
+} from '../actions';
 
-function* getAllContacts(action) {
-  console.log(' triggering saga action ', action);
+function* getAllContacts() {
+  const contacts = yield ContactsAPI.getAll();
+  try {
+    yield put({ type: FETCH_ALL_CONTACTS_SUCCESS, payload: contacts });
+  } catch (e) {
+    yield put({ type: FETCH_ALL_CONTACTS_FAILED, message: e.message });
+  }
 }
 
 function* watchGetlAllContacts() {
-  console.log(' watching get all contacts saga ');
   yield takeEvery(FETCH_ALL_CONTACTS, getAllContacts);
 }
 
-/*
- Alternatively you may use takeLatest.
- 
- Does not allow concurrent fetches of user. If "USER_FETCH_REQUESTED" gets
- dispatched while a fetch is already pending, that pending fetch is cancelled
- and only the latest one will be run.
- */
 function* mySaga() {
   yield fork(watchGetlAllContacts);
 }

@@ -1,12 +1,9 @@
 export const FETCH_ALL_CONTACTS = 'FETCH_ALL_CONTACTS';
 export const FETCH_ALL_CONTACTS_SUCCESS = 'FETCH_ALL_CONTACTS_SUCCESS';
+export const FETCH_ALL_CONTACTS_FAILED = 'FETCH_ALL_CONTACTS_FAILED';
 
-export const test = 'test';
-
-export function fetchAllContacts(query, callback) {
+export function fetchAllContacts() {
   return {
     type: FETCH_ALL_CONTACTS,
-    query,
-    callback,
   };
 }
