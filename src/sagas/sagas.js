@@ -1,4 +1,4 @@
-import { takeEvery, fork, put } from 'redux-saga/effects';
+import { takeEvery, fork, put, all } from 'redux-saga/effects';
 
 import * as ContactsAPI from '../ContactsAPI';
 import {
@@ -7,7 +7,7 @@ import {
   FETCH_ALL_CONTACTS_FAILED,
 } from '../actions';
 
-function* getAllContacts() {
+export function* getAllContacts() {
   const contacts = yield ContactsAPI.getAll();
   try {
     yield put({ type: FETCH_ALL_CONTACTS_SUCCESS, payload: contacts });
@@ -16,12 +16,12 @@ function* getAllContacts() {
   }
 }
 
-function* watchGetlAllContacts() {
+export function* watchGetlAllContacts() {
   yield takeEvery(FETCH_ALL_CONTACTS, getAllContacts);
 }
 
 function* mySaga() {
-  yield fork(watchGetlAllContacts);
+  yield all([fork(watchGetlAllContacts)]);
 }
 
 export default mySaga;

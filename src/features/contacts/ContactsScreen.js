@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { RingLoader } from 'halogen';
 import '../../App.css';
 import { fetchAllContacts } from '../../actions';
-import { SingleContact } from './components/Contacts';
+import { ContactList } from './components/Contacts';
 import SearchBar from './components/SearchBar';
 
 class ContactsScreen extends Component {
@@ -22,14 +22,32 @@ class ContactsScreen extends Component {
     });
   }
 
+  /**
+   * @description Function ready to send user to contact an user from his/her contacts list.
+   * @constructor
+   * @param contact ( Immutable Map )
+   * @returns alert with a message
+   */
   getInTouchBy = (value, contact) => {
     alert(`Get in touch with ${contact.get('name')} by ${value}`);
   };
 
+  /**
+   * @description Function ready to send user to a supposedly contact detail page.
+   * @constructor
+   * @param contact ( Immutable Map )
+   * @returns alert with a message
+   */
   goToDetailPage = contact => {
     alert(`Go to ${contact.get('name')}'s details page`);
   };
 
+  /**
+   * @description Render contacts from the search
+   * @constructor
+   * @param none
+   * @returns JSX
+   */
   renderContacts = () => {
     let contacts;
     const { term } = this.state;
@@ -43,18 +61,11 @@ class ContactsScreen extends Component {
       );
     }
     return (
-      <ol className="contacts-grid">
-        {contacts
-          .map(contact => (
-            <SingleContact
-              contact={contact}
-              key={contact.get('id')}
-              goToDetailPage={this.goToDetailPage}
-              getInTouchBy={this.getInTouchBy}
-            />
-          ))
-          .toArray()}
-      </ol>
+      <ContactList
+        contacts={contacts}
+        goToDetailPage={this.goToDetailPage}
+        getInTouchBy={this.getInTouchBy}
+      />
     );
   };
 
